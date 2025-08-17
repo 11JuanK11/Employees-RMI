@@ -1,15 +1,18 @@
 package Server;
 
+import Impl.EmployeesService;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class EmployeesServer {
-    public static void main(String []args) throws RemoteException
-    { Registry reg= LocateRegistry.createRegistry(1099);
-        CalcImplement calcImplement=new CalcImplement(0,0);
-        //nombre objeto
-        reg.rebind("Calc", calcImplement);
+
+    public static void main(String []args) throws RemoteException {
+
+        Registry reg= LocateRegistry.createRegistry(1099);
+        EmployeesService employeesService = new EmployeesService();
+        reg.rebind("employees", employeesService);
         System.out.println("servidor iniciado");
 
     }

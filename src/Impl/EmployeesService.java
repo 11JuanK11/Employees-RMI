@@ -1,10 +1,15 @@
 package Impl;
 
+import Domain.Employees;
 import Interfaces.IEmployees;
 
 import java.util.List;
 
-public class Employees implements IEmployees<Employees> {
+public class EmployeesService implements IEmployees<Employees> {
+
+    public EmployeesService() {
+
+    }
 
     @Override
     public float totalPaidForEmployee(List<Employees> list) {
