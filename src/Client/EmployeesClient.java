@@ -11,37 +11,91 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EmployeesClient {
+
     public static void main(String[] args) throws IOException {
-        float n1, n2, res; int choice = 0;
+        byte choice = 0;
+        List<Employees> employeesList = new ArrayList<>();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
-            System.out.println("1.Suma    ");
-            System.out.println("2.Resta    ");
-            System.out.println("3.Multiplicacion    ");
-            System.out.println("4.Division    ");
+            System.out.println("1.Registrar empleados.");
+            System.out.println("2.Total pagado por cada empleado.");
+            System.out.println("3.Promedio de pagos por mes.");
+            System.out.println("4.Total pagado.");
             System.out.println("5.Salir    ");
-            System.out.println("OPCION:");
-            choice=Integer.parseInt(br.readLine());
+            System.out.println("OPCIÓN: ");
+
+            choice = Byte.parseByte(br.readLine());
             if (choice!=5){
                 try {
-                    System.out.println("Ingresar numero de empleados");
-                    n1= Integer.parseInt(br.readLine());
-                    System.out.println("Ingresar numero de meses");
-                    n2= Integer.parseInt(br.readLine());
-                    IEmployees<Employees> employees= (EmployeesService) Naming.lookup("employees");
-                    //res= calcinterface.calculate(n1, n2, choice); crear metodo privado para las opciones
-                    //Remote lookup = Naming.lookup("Calc");
-                    //CalcImplement calcImplement= new CalcImplement(n1,n2);
-                    //res=calcImplement.calculate(n1, n2, choice);
-                    System.out.println("Resultado:"+res);
-                } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-                    Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, ex);
+                    optionChoise(choice, employeesList);
+
+                } catch (Exception e) {
+                    Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
         } while (choice != 5);
     }
+
+    private static void registerEmployees(int numEmployees, List<Employees> employeesList, IEmployees<Employees> iEmployees){
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            for (int i = employeesList.size()+1; i < employeesList.size()+numEmployees+1; i++) {
+                System.out.println("Ingresar número de meses para empleado " + i + " : ");
+                int numMonths = Integer.parseInt(br.readLine());
+                Employees employees = new Employees(i, "Empleado " + i);
+                employeesList.add(iEmployees.randomPayments(employees, numMonths));
+            }
+
+        } catch (Exception e){
+            System.out.println("Error al ingresar los empleados.");
+        }
+    }
+
+    private static void optionChoise(byte choice, List<Employees> employeesList){
+
+        try {
+            IEmployees<Employees> employees= (EmployeesService) Naming.lookup("employees");
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("Ingresar número de empleados: ");
+                    int numEmployees = Integer.parseInt(br.readLine());
+                    registerEmployees(numEmployees, employeesList, employees);
+                }
+                case 2 -> {
+                    if (!employeesList.isEmpty()){
+                        employees.totalPaidForEmployee();
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
+                case 3 -> {
+                    if (!employeesList.isEmpty()){
+                        employees.averageForMonth();
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
+                case 4 -> {
+                    if (!employeesList.isEmpty()){
+                        employees.totalPaid();
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
+                default -> System.out.println("Opción incorrecta.");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
 }

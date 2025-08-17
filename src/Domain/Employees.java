@@ -6,12 +6,11 @@ import java.util.List;
 public class Employees {
     private int id;
     private String name;
-    private List<Byte> numberOfMonths;
+    private List<Float> numberOfMonths;
 
-    public Employees(int id, String name, List<Byte> numberOfMonths) {
+    public Employees(int id, String name) {
         this.id = id;
         this.name = name;
-        this.numberOfMonths = numberOfMonths;
     }
 
     public int getId() {
@@ -30,11 +29,12 @@ public class Employees {
         this.name = name;
     }
 
-    public List<Byte> getNumberOfMonths() {
+    public List<Float> getNumberOfMonths() {
         return numberOfMonths;
     }
 
-    public void setNumberOfMonths(List<Byte> numberOfMonths) {
+    public void setNumberOfMonths(List<Float> numberOfMonths) {
         this.numberOfMonths = numberOfMonths;
     }
+
 }
