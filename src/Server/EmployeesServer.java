@@ -13,7 +13,7 @@ public class EmployeesServer {
         Registry reg= LocateRegistry.createRegistry(1099);
         EmployeesService employeesService = new EmployeesService();
         reg.rebind("employees", employeesService);
-        System.out.println("servidor iniciado");
+        System.out.println("Servidor Iniciado");
 
     }
 }
