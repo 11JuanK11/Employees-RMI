@@ -12,6 +12,11 @@ public class EmployeesService implements IEmployees<Employees> {
     }
 
     @Override
+    public Employees randomPayments(Employees employees, int numMonths) {
+        return employees;
+    }
+
+    @Override
     public float totalPaidForEmployee(List<Employees> list) {
         return 0;
     }
