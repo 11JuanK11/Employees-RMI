@@ -1,5 +1,9 @@
 package Client;
 
+import Domain.Employees;
+import Impl.EmployeesService;
+import Interfaces.IEmployees;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,18 +28,18 @@ public class EmployeesClient {
             choice=Integer.parseInt(br.readLine());
             if (choice!=5){
                 try {
-                    System.out.println("Numero uno:");
+                    System.out.println("Ingresar numero de empleados");
                     n1= Integer.parseInt(br.readLine());
-                    System.out.println("Numero dos:");
+                    System.out.println("Ingresar numero de meses");
                     n2= Integer.parseInt(br.readLine());
-                    CalcInterface calcinterface= (CalcInterface) Naming.lookup("Calc");
-                    res= calcinterface.calculate(n1, n2, choice);
+                    IEmployees<Employees> employees= (EmployeesService) Naming.lookup("employees");
+                    //res= calcinterface.calculate(n1, n2, choice); crear metodo privado para las opciones
                     //Remote lookup = Naming.lookup("Calc");
                     //CalcImplement calcImplement= new CalcImplement(n1,n2);
                     //res=calcImplement.calculate(n1, n2, choice);
                     System.out.println("Resultado:"+res);
                 } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-                    Logger.getLogger(CalcClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } while (choice != 5);
