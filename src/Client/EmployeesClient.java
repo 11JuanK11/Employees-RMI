@@ -3,14 +3,10 @@ package Client;
 import Domain.Employees;
 import Impl.EmployeesService;
 import Interfaces.IEmployees;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,21 +68,21 @@ public class EmployeesClient {
                 }
                 case 2 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaidForEmployee();
+                        employees.totalPaidForEmployee(employeesList);
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
                 case 3 -> {
                     if (!employeesList.isEmpty()){
-                        employees.averageForMonth();
+                        employees.averageForMonth(employeesList);
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
                 case 4 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaid();
+                        employees.totalPaid(employeesList);
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
