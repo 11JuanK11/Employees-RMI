@@ -41,8 +41,9 @@ public class EmployeesClient {
 
     private static void registerEmployees(int numEmployees, List<Employees> employeesList, IEmployees<Employees> iEmployees){
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int initialSizeList = employeesList.size() + 1, newSizeList = employeesList.size()+numEmployees + 1;
         try {
-            for (int i = employeesList.size()+1; i < employeesList.size()+numEmployees+1; i++) {
+            for (int i = initialSizeList; i < newSizeList; i++) {
                 System.out.println("Ingresar número de meses para empleado " + i + " : ");
                 int numMonths = Integer.parseInt(br.readLine());
                 Employees employees = new Employees(i, "Empleado " + i);
@@ -50,14 +51,14 @@ public class EmployeesClient {
             }
 
         } catch (Exception e){
-            System.out.println("Error al ingresar los empleados.");
+            System.out.println("Error al ingresar los empleados." + e);
         }
     }
 
     private static void optionChoise(byte choice, List<Employees> employeesList){
 
         try {
-            IEmployees<Employees> employees= (EmployeesService) Naming.lookup("employees");
+            IEmployees<Employees> employees= (IEmployees<Employees>) Naming.lookup("employees");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
             switch (choice) {
@@ -68,7 +69,7 @@ public class EmployeesClient {
                 }
                 case 2 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaidForEmployee(employeesList);
+                        System.out.println(employees.totalPaidForEmployee(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
