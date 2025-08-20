@@ -1,12 +1,12 @@
 package Client;
 
 import Domain.Employees;
-import Impl.EmployeesService;
 import Interfaces.IEmployees;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,12 +15,12 @@ import java.util.logging.Logger;
 public class EmployeesClient {
 
     public static void main(String[] args) throws IOException {
-        byte choice = 0;
+        byte choice;
         List<Employees> employeesList = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
-            System.out.println("1.Registrar empleados.");
+            System.out.println("\n1.Registrar empleados.");
             System.out.println("2.Total pagado por cada empleado.");
             System.out.println("3.Promedio de pagos por mes.");
             System.out.println("4.Total pagado.");
@@ -51,7 +51,7 @@ public class EmployeesClient {
                 employeesList.add(employees);
             }
 
-        } catch (Exception e){
+        } catch (IOException | NumberFormatException e){
             System.out.println("Error al ingresar los empleados." + e);
         }
     }
@@ -91,7 +91,7 @@ public class EmployeesClient {
                 }
                 default -> System.out.println("Opción incorrecta.");
             }
-        } catch (Exception e) {
+        } catch (IOException | NumberFormatException | NotBoundException e) {
             Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
         }
     }

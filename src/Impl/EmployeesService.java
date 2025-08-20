@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EmployeesService extends UnicastRemoteObject implements IEmployees<Employees> {
 
-    public EmployeesService()throws RemoteException {
+    public EmployeesService() throws RemoteException {
 
     }
 
