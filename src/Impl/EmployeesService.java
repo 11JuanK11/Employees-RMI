@@ -101,4 +101,41 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
         return "Pago total de todos los empleados: " + df.format(totalGeneral);
     }
 
+    @Override
+    public String employeeHistory(List<Employees> list) throws RemoteException {
+        if (list.isEmpty()) {
+            return "No se encontraron empleados registrados.";
+        }
+
+        StringBuilder result = new StringBuilder();
+        DecimalFormat df = new DecimalFormat("#,###");
+
+        for (Employees emp : list) {
+            result.append("Empleado ")
+                    .append(emp.getId())
+                    .append(" (")
+                    .append(emp.getName())
+                    .append(")\n");
+
+            float totalEmpleado = 0f;
+
+            List<Float> pagos = emp.getNumberOfMonths();
+            for (int i = 0; i < pagos.size(); i++) {
+                totalEmpleado += pagos.get(i);
+
+                result.append("   Mes ")
+                        .append(i + 1)
+                        .append(": ")
+                        .append(df.format(pagos.get(i)))
+                        .append("\n");
+            }
+
+            result.append("   Total: ")
+                    .append(df.format(totalEmpleado))
+                    .append("\n\n");
+        }
+
+        return result.toString();
+    }
+
 }

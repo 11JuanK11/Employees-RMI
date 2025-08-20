@@ -24,11 +24,12 @@ public class EmployeesClient {
             System.out.println("2.Total pagado por cada empleado.");
             System.out.println("3.Promedio de pagos por mes.");
             System.out.println("4.Total pagado.");
-            System.out.println("5.Salir    ");
+            System.out.println("5.Historial por empleado.");
+            System.out.println("6.Salir    ");
             System.out.println("OPCIÓN: ");
 
             choice = Byte.parseByte(br.readLine());
-            if (choice!=5){
+            if (choice!=6){
                 try {
                     optionChoise(choice, employeesList);
 
@@ -36,7 +37,7 @@ public class EmployeesClient {
                     Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     private static void registerEmployees(int numEmployees, List<Employees> employeesList, IEmployees<Employees> iEmployees){
@@ -85,6 +86,13 @@ public class EmployeesClient {
                 case 4 -> {
                     if (!employeesList.isEmpty()){
                         System.out.println(employees.totalPaid(employeesList));
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
+                case 5 -> {
+                    if (!employeesList.isEmpty()){
+                        System.out.println(employees.employeeHistory(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
