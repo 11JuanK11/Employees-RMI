@@ -37,7 +37,7 @@ public class EmployeesClient {
                     //Remote lookup = Naming.lookup("Calc");
                     //CalcImplement calcImplement= new CalcImplement(n1,n2);
                     //res=calcImplement.calculate(n1, n2, choice);
-                    System.out.println("Resultado:"+res);
+                    //System.out.println("Resultado:"+res);
                 } catch (NotBoundException | MalformedURLException | RemoteException ex) {
                     Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
