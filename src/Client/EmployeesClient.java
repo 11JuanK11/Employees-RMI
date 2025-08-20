@@ -3,14 +3,10 @@ package Client;
 import Domain.Employees;
 import Impl.EmployeesService;
 import Interfaces.IEmployees;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,8 +41,9 @@ public class EmployeesClient {
 
     private static void registerEmployees(int numEmployees, List<Employees> employeesList, IEmployees<Employees> iEmployees){
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int initialSizeList = employeesList.size() + 1, newSizeList = employeesList.size()+numEmployees + 1;
         try {
-            for (int i = employeesList.size()+1; i < employeesList.size()+numEmployees+1; i++) {
+            for (int i = initialSizeList; i < newSizeList; i++) {
                 System.out.println("Ingresar número de meses para empleado " + i + " : ");
                 int numMonths = Integer.parseInt(br.readLine());
                 Employees employees = new Employees(i, "Empleado " + i);
@@ -54,14 +51,14 @@ public class EmployeesClient {
             }
 
         } catch (Exception e){
-            System.out.println("Error al ingresar los empleados.");
+            System.out.println("Error al ingresar los empleados." + e);
         }
     }
 
     private static void optionChoise(byte choice, List<Employees> employeesList){
 
         try {
-            IEmployees<Employees> employees= (EmployeesService) Naming.lookup("employees");
+            IEmployees<Employees> employees= (IEmployees<Employees>) Naming.lookup("employees");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
             switch (choice) {
@@ -72,21 +69,21 @@ public class EmployeesClient {
                 }
                 case 2 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaidForEmployee();
+                        System.out.println(employees.totalPaidForEmployee(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
                 case 3 -> {
                     if (!employeesList.isEmpty()){
-                        employees.averageForMonth();
+                        System.out.println(employees.averageForMonth(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
                 case 4 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaid();
+                        System.out.println(employees.totalPaid(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }

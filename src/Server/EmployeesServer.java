@@ -1,6 +1,8 @@
 package Server;
 
+import Domain.Employees;
 import Impl.EmployeesService;
+import Interfaces.IEmployees;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -11,9 +13,9 @@ public class EmployeesServer {
     public static void main(String []args) throws RemoteException {
 
         Registry reg= LocateRegistry.createRegistry(1099);
-        EmployeesService employeesService = new EmployeesService();
+        IEmployees<Employees> employeesService = new EmployeesService();
         reg.rebind("employees", employeesService);
-        System.out.println("servidor iniciado");
+        System.out.println("Servidor Iniciado");
 
     }
 }
