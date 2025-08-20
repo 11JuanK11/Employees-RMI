@@ -27,6 +27,7 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
         return 0;
     }
 
+
     @Override
     public float totalPaid(List<Employees> list) throws RemoteException{
         return 0;

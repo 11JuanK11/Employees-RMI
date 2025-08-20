@@ -15,7 +15,7 @@ public class EmployeesServer {
         Registry reg= LocateRegistry.createRegistry(1099);
         IEmployees<Employees> employeesService = new EmployeesService();
         reg.rebind("employees", employeesService);
-        System.out.println("servidor iniciado");
+        System.out.println("Servidor Iniciado");
 
     }
 }
