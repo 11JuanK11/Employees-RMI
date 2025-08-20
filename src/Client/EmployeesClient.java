@@ -47,7 +47,8 @@ public class EmployeesClient {
                 System.out.println("Ingresar número de meses para empleado " + i + " : ");
                 int numMonths = Integer.parseInt(br.readLine());
                 Employees employees = new Employees(i, "Empleado " + i);
-                employeesList.add(iEmployees.randomPayments(employees, numMonths));
+                employees = iEmployees.randomPayments(employees, numMonths);
+                employeesList.add(employees);
             }
 
         } catch (Exception e){
