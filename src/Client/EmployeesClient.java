@@ -76,14 +76,14 @@ public class EmployeesClient {
                 }
                 case 3 -> {
                     if (!employeesList.isEmpty()){
-                        employees.averageForMonth(employeesList);
+                        System.out.println(employees.averageForMonth(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
                 case 4 -> {
                     if (!employeesList.isEmpty()){
-                        employees.totalPaid(employeesList);
+                        System.out.println(employees.totalPaid(employeesList));
                     } else {
                         System.out.println("No se encontraron empleados registrados.");
                     }
