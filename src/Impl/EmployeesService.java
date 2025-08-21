@@ -103,10 +103,6 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
 
     @Override
     public String employeeHistory(List<Employees> list) throws RemoteException {
-        if (list.isEmpty()) {
-            return "No se encontraron empleados registrados.";
-        }
-
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#,###");
 
@@ -136,6 +132,49 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
         }
 
         return result.toString();
+    }
+
+    @Override
+    public String findEmployeeByName(List<Employees> list, String name) throws RemoteException {
+        StringBuilder result = new StringBuilder();
+        DecimalFormat df = new DecimalFormat("#,###");
+
+        for (Employees emp : list) {
+            if (emp.getName().equalsIgnoreCase(name)) {
+                result.append("Empleado ")
+                        .append(emp.getId())
+                        .append(" (")
+                        .append(emp.getName())
+                        .append(")\n");
+
+                float totalEmpleado = 0f;
+                String[] months = {
+                        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                };
+
+                List<Float> pagos = emp.getNumberOfMonths();
+                for (int i = 0; i < pagos.size(); i++) {
+                    totalEmpleado += pagos.get(i);
+
+                    String mesNombre = (i < months.length) ? months[i] : "Mes " + (i + 1);
+
+                    result.append("   ")
+                            .append(mesNombre)
+                            .append(": ")
+                            .append(df.format(pagos.get(i)))
+                            .append("\n");
+                }
+
+                result.append("   Total: ")
+                        .append(df.format(totalEmpleado))
+                        .append("\n");
+
+                return result.toString(); // retorna al encontrarlo
+            }
+        }
+
+        return "Empleado con nombre '" + name + "' no encontrado.";
     }
 
 }
