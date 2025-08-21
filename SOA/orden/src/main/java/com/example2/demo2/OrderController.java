@@ -31,7 +31,7 @@ public class OrderController {
 
         model.addAttribute("productos", products);
         model.addAttribute("ordenes", ordenes);
-        model.addAttribute("orden", new Order(0, "", 1, 0));
+        model.addAttribute("orden", new Order(0, "", 1));
 
         return "orders-list";
     }
