@@ -9,4 +9,6 @@ public interface IEmployees<T> extends Remote {
     public String totalPaidForEmployee(List<T> list) throws RemoteException;
     public String averageForMonth(List<T> list) throws RemoteException;
     public String totalPaid(List<T> list) throws RemoteException;
+    public String employeeHistory(List<T> list) throws RemoteException;
+    public String findEmployeeByName(List<T> list, String name) throws RemoteException;
 }

@@ -1,12 +1,12 @@
 package Client;
 
 import Domain.Employees;
-import Impl.EmployeesService;
 import Interfaces.IEmployees;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,20 +15,22 @@ import java.util.logging.Logger;
 public class EmployeesClient {
 
     public static void main(String[] args) throws IOException {
-        byte choice = 0;
+        byte choice;
         List<Employees> employeesList = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
-            System.out.println("1.Registrar empleados.");
+            System.out.println("\n1.Registrar empleados.");
             System.out.println("2.Total pagado por cada empleado.");
             System.out.println("3.Promedio de pagos por mes.");
             System.out.println("4.Total pagado.");
-            System.out.println("5.Salir    ");
+            System.out.println("5.Historial por empleado.");
+            System.out.println("6.Buscar empleados por nombre.");
+            System.out.println("7.Salir    ");
             System.out.println("OPCIÓN: ");
 
             choice = Byte.parseByte(br.readLine());
-            if (choice!=5){
+            if (choice!=7){
                 try {
                     optionChoise(choice, employeesList);
 
@@ -36,7 +38,7 @@ public class EmployeesClient {
                     Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
-        } while (choice != 5);
+        } while (choice != 7);
     }
 
     private static void registerEmployees(int numEmployees, List<Employees> employeesList, IEmployees<Employees> iEmployees){
@@ -44,14 +46,16 @@ public class EmployeesClient {
         int initialSizeList = employeesList.size() + 1, newSizeList = employeesList.size()+numEmployees + 1;
         try {
             for (int i = initialSizeList; i < newSizeList; i++) {
-                System.out.println("Ingresar número de meses para empleado " + i + " : ");
+                System.out.println("Ingresar nombre del empleado " + i + " : ");
+                String name = br.readLine();
+                System.out.println("Ingresar número de meses para " + name + " : ");
                 int numMonths = Integer.parseInt(br.readLine());
-                Employees employees = new Employees(i, "Empleado " + i);
+                Employees employees = new Employees(i, name);
                 employees = iEmployees.randomPayments(employees, numMonths);
                 employeesList.add(employees);
             }
 
-        } catch (Exception e){
+        } catch (IOException | NumberFormatException e){
             System.out.println("Error al ingresar los empleados." + e);
         }
     }
@@ -89,9 +93,25 @@ public class EmployeesClient {
                         System.out.println("No se encontraron empleados registrados.");
                     }
                 }
+                case 5 -> {
+                    if (!employeesList.isEmpty()){
+                        System.out.println(employees.employeeHistory(employeesList));
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
+                case 6 -> {
+                    if (!employeesList.isEmpty()){
+                        System.out.println("Ingresar nombre del empleado: ");
+                        String name = br.readLine();
+                        System.out.println(employees.findEmployeeByName(employeesList, name));
+                    } else {
+                        System.out.println("No se encontraron empleados registrados.");
+                    }
+                }
                 default -> System.out.println("Opción incorrecta.");
             }
-        } catch (Exception e) {
+        } catch (IOException | NumberFormatException | NotBoundException e) {
             Logger.getLogger(EmployeesClient.class.getName()).log(Level.SEVERE, null, e);
         }
     }
