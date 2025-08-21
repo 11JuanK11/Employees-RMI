@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1>Catálogo de Productos</h1>
+
+    <form th:action="@{/orders}" th:object="${orden}" method="post">
+        <label>Producto:</label>
+        <select th:field="*{productName}">
+            <option th:each="p : ${productos}" th:value="${p.name}" th:text="${p.name}"></option>
+        </select>
+
+        <label>Cantidad:</label>
+        <input type="number" th:field="*{quantity}" min="1" value="1"/>
+
+        <button type="submit">Crear Pedido</button>
+    </form>
+
+    <h2>Pedidos creados</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+        </tr>
+        <tr th:each="o : ${ordenes}">
+            <td th:text="${o.id}"></td>
+            <td th:text="${o.productName}"></td>
+            <td th:text="${o.quantity}"></td>
+        </tr>
+    </table>
+</body>
+</html>
