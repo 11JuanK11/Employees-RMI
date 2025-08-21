@@ -1,6 +1,6 @@
 # Entrega Uno - Programación Distribuida y Paralela
 
-## 1. Diagrama de Clases 
+## 1. Diagrama de Clases sobre RMI
 
 ![Diagrama de clases - Primer punto](./img/Diagrama-Empleados-RMI.png)
 
