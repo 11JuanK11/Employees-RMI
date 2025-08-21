@@ -1,7 +1,5 @@
 package Client;
 
-import Domain.Employees;
-import Interfaces.IEmployees;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,24 +10,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Domain.Employees;
+import Interfaces.IEmployees;
+
 public class EmployeesClient {
 
     public static void main(String[] args) throws IOException {
-        byte choice;
+        byte choice = 0;
         List<Employees> employeesList = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
-            System.out.println("\n1.Registrar empleados.");
-            System.out.println("2.Total pagado por cada empleado.");
-            System.out.println("3.Promedio de pagos por mes.");
-            System.out.println("4.Total pagado.");
-            System.out.println("5.Historial por empleado.");
-            System.out.println("6.Buscar empleados por nombre.");
-            System.out.println("7.Salir    ");
-            System.out.println("OPCIÓN: ");
+            try {
+                System.out.println("\n1.Registrar empleados.");
+                System.out.println("2.Total pagado por cada empleado.");
+                System.out.println("3.Promedio de pagos por mes.");
+                System.out.println("4.Total pagado.");
+                System.out.println("5.Historial por empleado.");
+                System.out.println("6.Buscar empleados por nombre.");
+                System.out.println("7.Salir    ");
+                System.out.println("OPCIÓN: ");
 
-            choice = Byte.parseByte(br.readLine());
+                choice = Byte.parseByte(br.readLine());
+            } catch (IOException | NumberFormatException e) {}
+            
             if (choice!=7){
                 try {
                     optionChoise(choice, employeesList);
