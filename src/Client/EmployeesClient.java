@@ -50,6 +50,10 @@ public class EmployeesClient {
                 String name = br.readLine();
                 System.out.println("Ingresar número de meses para " + name + " : ");
                 int numMonths = Integer.parseInt(br.readLine());
+                while (numMonths <=0){
+                    System.out.println("El número de meses no es permitido. Intente nuevamente: ");
+                    numMonths = Integer.parseInt(br.readLine());
+                }
                 Employees employees = new Employees(i, name);
                 employees = iEmployees.randomPayments(employees, numMonths);
                 employeesList.add(employees);
@@ -70,6 +74,10 @@ public class EmployeesClient {
                 case 1 -> {
                     System.out.println("Ingresar número de empleados: ");
                     int numEmployees = Integer.parseInt(br.readLine());
+                    while (numEmployees <= 0){
+                        System.out.println("El número de empleados no es permitido. Intente nuevamente: ");
+                        numEmployees = Integer.parseInt(br.readLine());
+                    }
                     registerEmployees(numEmployees, employeesList, employees);
                 }
                 case 2 -> {
