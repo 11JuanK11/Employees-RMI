@@ -15,29 +15,29 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
     }
 
     @Override
-    public Employees randomPayments(Employees employees, int numMonths) throws RemoteException{
-        List<Float> numberOfMonths = new ArrayList<>();
+    public Employees randomPayments(Employees employee, int numMonths) throws RemoteException {
+        List<Float> monthsPayments = new ArrayList<>();
 
         for (int i = 0; i < numMonths; i++) {
             int randomInt = (int) (1_000_000 + Math.random() * (5_000_000 - 1_000_000));
-            numberOfMonths.add((float) randomInt);
+            monthsPayments.add((float) randomInt);
         }
 
-        employees.setNumberOfMonths(numberOfMonths);
+        employee.setNumberOfMonths(monthsPayments);
 
-        return employees;
+        return employee;
     }
 
     @Override
-    public String totalPaidForEmployee(List<Employees> employeesList) throws RemoteException {
+    public String totalPaidForEmployee(List<Employees> employeeList) throws RemoteException {
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#,###");
 
-        for (Employees emp : employeesList) {
-            float totalEmpleado = 0f;
+        for (Employees emp : employeeList) {
+            float totalEmployee = 0f;
 
-            for (Float pago : emp.getNumberOfMonths()) {
-                totalEmpleado += pago;
+            for (Float payment : emp.getNumberOfMonths()) {
+                totalEmployee += payment;
             }
 
             result.append("Empleado ")
@@ -45,7 +45,7 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
                     .append(" (")
                     .append(emp.getName())
                     .append(") - Pago total: ")
-                    .append(df.format(totalEmpleado))
+                    .append(df.format(totalEmployee))
                     .append("\n");
         }
 
@@ -53,34 +53,34 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
     }
 
     @Override
-    public String averageForMonth(List<Employees> list) throws RemoteException {
+    public String averageForMonth(List<Employees> employeeList) throws RemoteException {
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#,###");
 
         int maxMonths = 0;
-        for (Employees emp : list) {
+        for (Employees emp : employeeList) {
             if (emp.getNumberOfMonths().size() > maxMonths) {
                 maxMonths = emp.getNumberOfMonths().size();
             }
         }
 
         for (int month = 0; month < maxMonths; month++) {
-            float sumaMes = 0f;
-            int empleadosConMes = 0;
+            float monthSum = 0f;
+            int employeesWithMonth = 0;
 
-            for (Employees emp : list) {
+            for (Employees emp : employeeList) {
                 if (emp.getNumberOfMonths().size() > month) {
-                    sumaMes += emp.getNumberOfMonths().get(month);
-                    empleadosConMes++;
+                    monthSum += emp.getNumberOfMonths().get(month);
+                    employeesWithMonth++;
                 }
             }
 
-            if (empleadosConMes > 0) {
-                float promedio = sumaMes / empleadosConMes;
+            if (employeesWithMonth > 0) {
+                float average = monthSum / employeesWithMonth;
                 result.append("Mes ")
                         .append(month + 1)
                         .append(" - Promedio: ")
-                        .append(df.format(promedio))
+                        .append(df.format(average))
                         .append("\n");
             }
         }
@@ -89,11 +89,11 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
     }
 
     @Override
-    public String totalPaid(List<Employees> list) throws RemoteException {
+    public String totalPaid(List<Employees> employeeList) throws RemoteException {
         float totalGeneral = 0f;
-        for (Employees emp : list) {
-            for (Float pago : emp.getNumberOfMonths()) {
-                totalGeneral += pago;
+        for (Employees emp : employeeList) {
+            for (Float payment : emp.getNumberOfMonths()) {
+                totalGeneral += payment;
             }
         }
 
@@ -102,32 +102,32 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
     }
 
     @Override
-    public String employeeHistory(List<Employees> list) throws RemoteException {
+    public String employeeHistory(List<Employees> employeeList) throws RemoteException {
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#,###");
 
-        for (Employees emp : list) {
+        for (Employees emp : employeeList) {
             result.append("Empleado ")
                     .append(emp.getId())
                     .append(" (")
                     .append(emp.getName())
                     .append(")\n");
 
-            float totalEmpleado = 0f;
+            float totalEmployee = 0f;
 
-            List<Float> pagos = emp.getNumberOfMonths();
-            for (int i = 0; i < pagos.size(); i++) {
-                totalEmpleado += pagos.get(i);
+            List<Float> payments = emp.getNumberOfMonths();
+            for (int i = 0; i < payments.size(); i++) {
+                totalEmployee += payments.get(i);
 
                 result.append("   Mes ")
                         .append(i + 1)
                         .append(": ")
-                        .append(df.format(pagos.get(i)))
+                        .append(df.format(payments.get(i)))
                         .append("\n");
             }
 
             result.append("   Total: ")
-                    .append(df.format(totalEmpleado))
+                    .append(df.format(totalEmployee))
                     .append("\n\n");
         }
 
@@ -135,46 +135,46 @@ public class EmployeesService extends UnicastRemoteObject implements IEmployees<
     }
 
     @Override
-    public String findEmployeeByName(List<Employees> list, String name) throws RemoteException {
+    public String findEmployeeByName(List<Employees> employeeList, String name) throws RemoteException {
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("#,###");
 
-        for (Employees emp : list) {
+        boolean found = false;
+
+        for (Employees emp : employeeList) {
             if (emp.getName().equalsIgnoreCase(name)) {
+                found = true;
                 result.append("Empleado ")
-                        .append(emp.getId())
-                        .append(" (")
-                        .append(emp.getName())
-                        .append(")\n");
+                    .append(emp.getId())
+                    .append(" (")
+                    .append(emp.getName())
+                    .append(")\n");
 
-                float totalEmpleado = 0f;
-                String[] months = {
-                        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                };
+                float totalEmployee = 0f;
+                List<Float> payments = emp.getNumberOfMonths();
 
-                List<Float> pagos = emp.getNumberOfMonths();
-                for (int i = 0; i < pagos.size(); i++) {
-                    totalEmpleado += pagos.get(i);
+                for (int i = 0; i < payments.size(); i++) {
+                    totalEmployee += payments.get(i);
 
-                    String mesNombre = (i < months.length) ? months[i] : "Mes " + (i + 1);
-
-                    result.append("   ")
-                            .append(mesNombre)
-                            .append(": ")
-                            .append(df.format(pagos.get(i)))
-                            .append("\n");
+                    result.append("   Mes ")
+                        .append(i + 1)
+                        .append(": ")
+                        .append(df.format(payments.get(i)))
+                        .append("\n");
                 }
 
                 result.append("   Total: ")
-                        .append(df.format(totalEmpleado))
-                        .append("\n");
-
-                return result.toString(); // retorna al encontrarlo
+                    .append(df.format(totalEmployee))
+                    .append("\n\n");
             }
         }
 
-        return "Empleado con nombre '" + name + "' no encontrado.";
+        if (!found) {
+            return "Empleado con nombre '" + name + "' no encontrado.";
+        }
+
+        return result.toString();
     }
+
 
 }
